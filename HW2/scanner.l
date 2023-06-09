@@ -7,6 +7,9 @@ char* copy(const char *str) {
 }
 %}
 
+%x                  COMMENT
+%x                  COMMENTS
+
 Identifiers         [_a-zA-Z][_a-zA-Z0-9]*
 Integer             [0-9]+
 Double              [0-9]+"."[0-9]*|[0-9]*"."[0-9]+
@@ -65,6 +68,17 @@ Others              .
 ">>"                {yylval.strVal = copy(yytext); return RIGHTSHIFT;}
 "<<"                {yylval.strVal = copy(yytext); return LEFTSHIFT;}
 
+"//".*              {}
+"//".*"\\\n"        {BEGIN COMMENT;}
+<COMMENT>"\\\n"     {}
+<COMMENT>"\n"       {BEGIN 0;}
+
+"/*"                {BEGIN COMMENTS;}
+<COMMENTS>"*/"      {BEGIN 0;}
+<COMMENTS>"\n"      {}
+
 {Others}            {}
+<COMMENT>{Others}   {}
+<COMMENTS>{Others}  {}
 
 %%
