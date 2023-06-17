@@ -264,7 +264,6 @@ expr2: INCREMENT expr2 {$$ = concat($1, OPENEXPR, $2, CLOSEEXPR, "","","","");}
 expr1: expr1 INCREMENT {$$ = concat(OPENEXPR, $1, CLOSEEXPR, $2, "","","","");}
 	 | expr1 DECREMENT {$$ = concat(OPENEXPR, $1, CLOSEEXPR, $2, "","","","");}
 	 | expr1 '(' arguments ')' {$$ = concat(OPENEXPR, $1, CLOSEEXPR, $2, $3, $4, "","");}
-	 | '[' expr1 ']' {$$ = concat($1, OPENEXPR, $2, CLOSEEXPR, $3, "","","");}
 	 | terminal {}
 	 ;
 
